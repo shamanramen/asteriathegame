@@ -1,0 +1,29 @@
+id,role,type,description,size/ratio,style line ref,source
+player_sprite,player-sprite,image,"hooded star-marked runner hero, dynamic run pose, coral-fire cloak",1:1,FORMULA,generate
+asteria_sprite,goal-sprite,image,"fleeing starlight goddess, trailing stardust, side run pose",1:1,FORMULA,generate
+rival_fire,rival-sprite,image,"war-scarred fire duelist, ember fists, side stance",1:1,FORMULA,generate
+rival_water,rival-sprite,image,"grieving tide-moon mage, flowing robes with water orb, side stance",1:1,FORMULA,generate
+rival_air,rival-sprite,image,"greedy wind trickster, twin air blades, side stance",1:1,FORMULA,generate
+tile_temple,ground-tiles,image,"ruined star-temple stone slab surface with gold trim seams",1:1,FORMULA,generate
+bg_far,background-l1,image,"deep void nebula with falling stars, far layer",16:9,FORMULA,generate
+bg_mid,background-l2,image,"ruined temple colonnade silhouettes against nebula, mid layer",16:9,FORMULA,generate
+bg_near,background-l3,image,"broken star-temple arches and statues, dark near layer",16:9,FORMULA,generate
+vfx_sheet,vfx-sprites,image,"grid of separated elemental game pickups and projectiles: fire bolt, water orb, wind blade, violet lightning orb, gravity ring, gold star shard",1:1,FORMULA,generate
+music_chase,music-loop,audio,"relentless dark synth-orchestral chase loop with mythic choir hits",30s,audio.md,generate
+sfx_cast,sfx,audio,"elemental energy bolt cast zap",1s,audio.md,generate
+sfx_pickup,sfx,audio,"crystalline star shard chime",1s,audio.md,generate
+sfx_dash,sfx,audio,"fast whoosh dash with sparkle tail",1s,audio.md,generate
+sfx_hit,sfx,audio,"impact thud with magical crackle",1s,audio.md,generate
+particles_proc,vfx-particles,image,"code-drawn square particles in element jewel colors per FORMULA palette (procedural)",n/a,FORMULA,procedural
+hud_proc,ui-hud,image,"code-drawn HUD bars/icons frames in void-dark + gold per FORMULA palette (procedural)",n/a,FORMULA,procedural
+oracle_sprite,npc-sprite,image,"hooded star-oracle keeper, serene standing pose with floating gold astrolabe",1:1,FORMULA,generate
+guardian_sprite,boss-sprite,image,"towering armored nexus sentinel, star-forged plate, twin element auras",1:1,FORMULA,generate
+asteria_v2,goal-sprite,image,"breathtaking racially ambiguous goddess glancing back mid-run with knowing smile, gold stardust trail",1:1,FORMULA,generate
+enemy_harpy,mob-sprite,image,"harpy of Mercury, winged teal storm-feather creature mid-flight",1:1,FORMULA,generate
+enemy_golem,mob-sprite,image,"stone golem of Capricorn with goat horns and gold rune seams",1:1,FORMULA,generate
+enemy_serpent,mob-sprite,image,"twin-headed sea serpent of Neptune coiled to strike",1:1,FORMULA,generate
+enemy_lion,mob-sprite,image,"radiant Nemean sun-lion with solar-flare gold mane prowling",1:1,FORMULA,generate
+player_cloaks,player-sprite-variants,image,"code-tinted cloak variants (ember/tide/gilded/umbral) derived from player.png (procedural recolor)",n/a,FORMULA,procedural
+anim_vfx,vfx-procedural,image,"code-drawn afterimages, ward arc, muzzle flash, squash/recoil transforms per FORMULA palette (procedural)",n/a,FORMULA,procedural
+player_stand,player-sprite-pose,image,"hooded star-marked hero standing idle pose, cloak settled, facing side",1:1,FORMULA,generate
+player_jump,player-sprite-pose,image,"hooded star-marked hero mid-air jump pose, knees tucked, cloak billowing upward",1:1,FORMULA,generate
