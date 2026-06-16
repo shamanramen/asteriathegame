@@ -452,7 +452,7 @@ if(p.inv%6<3){
  const standing=p.onGround&&Math.abs(p.vx)<=0.6&&p.dashT<=0;
  const img=airborne?IMG["pose_jump_"+C.id]:(standing?IMG["pose_stand_"+C.id]:IMG[C.img]);
  let pw,ph;
- if(airborne){pw=64;ph=66;}else if(standing){pw=28;ph=64;}else{pw=66;ph=64;}
+ if(airborne){pw=64;ph=66;}else if(standing){pw=29;ph=67;}else{pw=66;ph=64;}
  let bob=0,lean=0,sx=1,syq=1;
  // idle: breathing scale + slow bob; cloak motes drift off
  if(standing&&p.idleT>12){bob=Math.sin(time*0.05)*2.2;syq=1+Math.sin(time*0.05)*0.02;
