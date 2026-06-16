@@ -42,7 +42,7 @@ touchBtns.push({x:W-m*3-s*3,y:H-s*2-m*2,w:s,h:s*0.7,cmd:"ward",label:"\u25C9"});
 
 // ---------- assets ----------
 const IMG={},AUD={};
-const imgFiles=["player_ember","player_tide","player_gilded","player_umbral","pose_stand_ember","pose_stand_tide","pose_stand_gilded","pose_stand_umbral","pose_jump_ember","pose_jump_tide","pose_jump_gilded","pose_jump_umbral","asteria","rival_fire","rival_water","rival_air","oracle","guardian","harpy","golem","serpent","lion","tile","bg_far","bg_mid","bg_near","fire_bolt","water_orb","wind_blade","lightning_orb","gravity_ring","star_shard"];
+const imgFiles=["player_ember","player_tide","player_gilded","player_umbral","player_verdant","player_tempest","player_amethyst","player_sanguine","pose_stand_ember","pose_stand_tide","pose_stand_gilded","pose_stand_umbral","pose_stand_verdant","pose_stand_tempest","pose_stand_amethyst","pose_stand_sanguine","pose_jump_ember","pose_jump_tide","pose_jump_gilded","pose_jump_umbral","pose_jump_verdant","pose_jump_tempest","pose_jump_amethyst","pose_jump_sanguine","asteria","rival_fire","rival_water","rival_air","oracle","guardian","harpy","golem","serpent","lion","tile","bg_far","bg_mid","bg_near","fire_bolt","water_orb","wind_blade","lightning_orb","gravity_ring","star_shard"];
 let loaded=0,toLoad=imgFiles.length;
 for(const n of imgFiles){const im=new Image();im.src="./assets/"+n+".png";im.onload=()=>loaded++;im.onerror=()=>loaded++;IMG[n]=im;}
 for(const n of ["sfx_cast","sfx_pickup","sfx_dash","sfx_hit"]){const a=new Audio("./assets/"+n+".mp3");a.volume=0.35;AUD[n]=a;}
@@ -62,7 +62,11 @@ const CLOAKS=[
  {id:"ember", img:"player_ember", name:STR.cloakEmber, desc:STR.cloakEmberDesc, color:"#d4634a", dmg:1.3, fuseGain:1.5, wardMax:100, wardReflect:false, blinkLen:175, blinkInv:18, speed:1, shardHeat:1},
  {id:"tide",  img:"player_tide",  name:STR.cloakTide,  desc:STR.cloakTideDesc,  color:"#4a7a9c", dmg:1, fuseGain:1, wardMax:160, wardReflect:true,  blinkLen:175, blinkInv:18, speed:1, shardHeat:1},
  {id:"gilded",img:"player_gilded",name:STR.cloakGilded,desc:STR.cloakGildedDesc,color:"#c9a86b", dmg:1, fuseGain:1, wardMax:100, wardReflect:false, blinkLen:175, blinkInv:18, speed:1.18, shardHeat:2},
- {id:"umbral",img:"player_umbral",name:STR.cloakUmbral,desc:STR.cloakUmbralDesc,color:"#6d5a9e", dmg:1, fuseGain:1, wardMax:100, wardReflect:false, blinkLen:245, blinkInv:34, speed:1, shardHeat:1}];
+ {id:"umbral",img:"player_umbral",name:STR.cloakUmbral,desc:STR.cloakUmbralDesc,color:"#6d5a9e", dmg:1, fuseGain:1, wardMax:100, wardReflect:false, blinkLen:245, blinkInv:34, speed:1, shardHeat:1},
+ {id:"verdant", img:"player_verdant", name:STR.cloakVerdant, desc:STR.cloakVerdantDesc, color:"#5f9e63", dmg:1.2, fuseGain:1, wardMax:150, wardReflect:false, blinkLen:175, blinkInv:18, speed:0.97, shardHeat:1},
+ {id:"tempest", img:"player_tempest", name:STR.cloakTempest, desc:STR.cloakTempestDesc, color:"#3bb0b8", dmg:1, fuseGain:1.7, wardMax:100, wardReflect:false, blinkLen:175, blinkInv:18, speed:1.1, shardHeat:1},
+ {id:"amethyst",img:"player_amethyst",name:STR.cloakAmethyst,desc:STR.cloakAmethystDesc,color:"#c14fb8", dmg:1.15, fuseGain:1.2, wardMax:110, wardReflect:false, blinkLen:215, blinkInv:26, speed:1, shardHeat:2},
+ {id:"sanguine",img:"player_sanguine",name:STR.cloakSanguine,desc:STR.cloakSanguineDesc,color:"#8f2230", dmg:1.45, fuseGain:1.2, wardMax:75, wardReflect:false, blinkLen:175, blinkInv:18, speed:1, shardHeat:1}];
 let cloakIdx=0;
 const cloak=()=>CLOAKS[cloakIdx];
 
