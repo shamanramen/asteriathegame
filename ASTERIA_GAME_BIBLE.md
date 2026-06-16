@@ -199,15 +199,19 @@ flat 3.2 damage and pierces, ignoring the off-element penalty.
 ## 12. The cloaks (build choice at the forge)
 
 Before each run you pick a **cloak** at the forge ("CHOOSE YOUR CLOAK — each cloak
-carries a different discipline"). All four are procedural recolors of the ember hero,
-each shifting the build:
+carries a different discipline"). All eight are procedural recolors of the ember hero
+(warm-mask hue rotation), each shifting the build:
 
-| Cloak | Discipline | Effect |
-|---|---|---|
-| **Ember** | War-fire | +30% spell damage, fusion charges faster |
-| **Tide** | Moon-tide | Stronger ward that **reflects shots back** |
-| **Gilded** | Mercury | Swifter stride; **shards worth double trail heat** |
-| **Umbral** | Void | Longer blink, longer i-frame grace after it |
+| Cloak | Color | Discipline | Effect |
+|---|---|---|---|
+| **Ember** | coral | War-fire | +30% spell damage, fusion charges faster |
+| **Tide** | blue | Moon-tide | Stronger ward that **reflects shots back** |
+| **Gilded** | gold | Mercury | Swifter stride; **shards worth double trail heat** |
+| **Umbral** | violet | Void | Longer blink, longer i-frame grace after it |
+| **Verdant** | green | Gaia | Deep ward reserve + heavier strike, slightly slower |
+| **Tempest** | teal | Storm | Fusion gathers fast + quicker stride |
+| **Amethyst** | magenta | Mystic | Long blink + **shards worth double trail** |
+| **Sanguine** | crimson | Blood | Highest strike, but a thinner guard |
 
 ## 13. Verbs / mechanics
 
@@ -328,7 +332,7 @@ ember originals — a hue-shift on the warm-cloak mask (recipe lives in `tools/`
 See `design/assets.csv` for the canonical manifest (id, role, type, description,
 ratio, source). Quick categorical summary of what exists today:
 
-- **Hero:** base run sprite + stand/jump poses, ×4 cloak recolors (ember/tide/gilded/umbral) → 12 in-game pose/cloak sprites.
+- **Hero:** base run sprite + stand/jump poses, ×8 cloak recolors (ember/tide/gilded/umbral/verdant/tempest/amethyst/sanguine) → 24 in-game pose/cloak sprites.
 - **Goddess:** Asteria (v1 + v2 "glancing back" final).
 - **Rivals:** fire (Pyrrhos), water (Selene), air (Kestrel).
 - **Boss:** guardian (The First Hunter).
