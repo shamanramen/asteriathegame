@@ -13,6 +13,7 @@ export const STR = {
   pickupLightning: "LIGHTNING - an element no elementalist may wield. But you can.",
   pickupGravity: "GRAVITY - Saturn's bind answers a name you forgot.",
   shard: "+TRAIL",
+  gateOpen: "THE SEAL BREAKS",
   rival1Name: "PYRRHOS OF THE MARS COURT",
   rival1Wish: "\"My legion burned. She will return them. Stand aside, anomaly.\"",
   rival2Name: "SELENE OF THE MOON TIDE",

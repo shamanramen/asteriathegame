@@ -1,0 +1,5 @@
+[
+  {"id": "star-bridge", "name": "STAR BRIDGE", "kind": "crumble", "after": 1, "spans": 6, "span": 84, "gap": 46, "hold": 50, "element": "none", "vault": 0, "count": 0, "width": 0, "tint": "#3a2a58", "banner": "The stone remembers your step, then lets go."},
+  {"id": "lightning-gate", "name": "LIGHTNING GATE", "kind": "gate", "after": 2, "spans": 0, "span": 0, "gap": 0, "hold": 0, "element": "lightning", "vault": 148, "count": 0, "width": 40, "tint": "#241838", "banner": "Lightning opens the seal. A jump clears it."},
+  {"id": "void-colonnade", "name": "VOID COLONNADE", "kind": "pillars", "after": 5, "spans": 0, "span": 0, "gap": 140, "hold": 0, "element": "none", "vault": 0, "count": 7, "width": 64, "tint": "#140818", "banner": "Pillars over the void. Blink the wide one."}
+]

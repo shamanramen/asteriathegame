@@ -1,8 +1,10 @@
 import { STR } from "./strings.js";
 import movesSheet from "../design/moves.json" with { type: "json" };
 import enemiesSheet from "../design/enemies.json" with { type: "json" };
+import levelsSheet from "../design/levels.json" with { type: "json" };
 const MOVE = Object.fromEntries(movesSheet.map(row => [row.id, row]));
 const ENEMY = Object.fromEntries(enemiesSheet.map(row => [row.id, row]));
+const LEVELS = levelsSheet;
 
 // ---------- seeded RNG (logic), separate visual RNG ----------
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
@@ -88,8 +90,31 @@ gravity:{name:STR.elGravity,color:"#6d5a9e",icon:"gravity_ring",speed:5.5,dmg:2.
 const TILE=64,GROUND=520; // world-space; camera maps to screen
 let level=null;
 function genLevel(){rng=mulberry32(SEED);
-const plats=[],shards=[],pickups=[],rivals=[],decos=[],mobs=[];let way=null;
+const plats=[],shards=[],pickups=[],rivals=[],decos=[],mobs=[],gates=[],zones=[];let way=null;
 const mob=(kind,mx,my)=>{const e=ENEMY[kind];return {kind,x:mx,y:my,hx:mx,hp:e.hp,hpMax:e.hp,t:Math.floor(rng()*60),flash:0,dir:-1,vy:0,struck:-1,slid:-1,wind:0};};
+const lay=(piece)=>{
+ const x0=x;
+ if(piece.kind==="crumble"){
+  x+=36;
+  for(let i=0;i<piece.spans;i++){
+   plats.push({x,y:GROUND,w:piece.span,crumble:piece.hold,life:-1,kind:"crumble"});
+   x+=piece.span;if(i<piece.spans-1)x+=piece.gap;}
+ }else if(piece.kind==="gate"){
+  x+=70;plats.push({x,y:GROUND,w:240});
+  const gx=x+240;
+  gates.push({x:gx,w:piece.width,el:piece.element,vault:piece.vault,open:false});
+  plats.push({x:gx-18,y:GROUND-piece.vault,w:piece.width+36,kind:"vault"});
+  x=gx+piece.width;plats.push({x,y:GROUND,w:280});x+=280;
+ }else if(piece.kind==="pillars"){
+  x+=30;
+  for(let i=0;i<piece.count;i++){
+   const gap=i===Math.floor(piece.count/2)?piece.gap+100:piece.gap;
+   x+=gap;plats.push({x,y:GROUND,w:piece.width,kind:"pillar"});
+   if(i===3)shards.push({x:x+piece.width/2,y:GROUND-78,got:false});
+   x+=piece.width;}
+ }
+ zones.push({x0,x1:x,name:piece.name,tint:piece.tint,banner:piece.banner,seen:false,kind:piece.kind});
+};
 let taughtScorp=false;
 let x=0;const chunks=7;
 plats.push({x:-200,y:GROUND,w:1400});x=1200;
@@ -98,6 +123,7 @@ const rivalDefs=[
  {at:4,img:"rival_fire",name:STR.rival1Name,wish:STR.rival1Wish,hp:11,weak:"gravity",proj:"fire_bolt",color:"#d4634a",echo:STR.echo1},
  {at:6,img:"rival_air",name:STR.rival3Name,wish:STR.rival3Wish,hp:14,weak:"gravity",proj:"wind_blade",color:"#c9a86b",echo:STR.echo3}];
 for(let c=1;c<=chunks;c++){
+  for(const piece of LEVELS) if(piece.after===c) lay(piece);
   const segs=4+Math.floor(rng()*2);
   for(let s=0;s<segs;s++){
     const w=260+rng()*340;
@@ -134,7 +160,7 @@ for(let c=1;c<=chunks;c++){
 x+=110;plats.push({x,y:GROUND,w:1000});
 const nexusX=x+650;
 for(let i=0;i<40;i++)decos.push({x:rng()*x,y:100+rng()*260,r:1+rng()*2});
-return{plats,shards,pickups,rivals,mobs,nexusX,endX:x+1000,way,guardian:{x:nexusX-330,y:GROUND,hp:26,hpMax:26,state:"waiting",t:0,flash:0,phase:1,weak:"lightning"}};}
+return{plats,shards,pickups,rivals,mobs,gates,zones,nexusX,endX:x+1000,way,guardian:{x:nexusX-330,y:GROUND,hp:26,hpMax:26,state:"waiting",t:0,flash:0,phase:1,weak:"lightning"}};}
 
 // ---------- game state ----------
 let state="title"; // title, intro, forge, play, card, over, escape
@@ -203,7 +229,15 @@ if(pressed.has("jump"))p.jbuf=7;else if(p.jbuf>0)p.jbuf--;
 p.vy+=0.55;if(p.vy>14)p.vy=14;if(p.dashT>0){if(p.vy>1.2)p.vy=1.2;p.vx=p.face*9;}
 p.y+=p.vy;p.x+=p.vx;
 p.onGround=false;
-for(const pl of level.plats){if(p.x>pl.x-14&&p.x<pl.x+pl.w+14){if(p.vy>=0&&p.y>=pl.y&&p.y-p.vy<=pl.y+18){p.y=pl.y;p.vy=0;p.onGround=true;}}}
+for(const pl of level.plats){if(pl.gone)continue;if(p.x>pl.x-14&&p.x<pl.x+pl.w+14){if(p.vy>=0&&p.y>=pl.y&&p.y-p.vy<=pl.y+18){p.y=pl.y;p.vy=0;p.onGround=true;}}}
+for(const g of level.gates){if(g.open)continue;
+ if(p.y>GROUND-g.vault+22&&p.x+14>g.x&&p.x-14<g.x+g.w){
+  if(p.x<g.x+g.w/2){p.x=g.x-16;p.vx=Math.min(0,p.vx);}else{p.x=g.x+g.w+16;p.vx=Math.max(0,p.vx);}}}
+for(const pl of level.plats){if(!pl.crumble||pl.gone)continue;
+ const on=p.onGround&&Math.abs(p.y-pl.y)<8&&p.x>pl.x&&p.x<pl.x+pl.w;
+ if(on&&pl.life<0)pl.life=pl.crumble;
+ if(pl.life>=0){pl.life--;if(pl.life<=0){pl.gone=true;spawnParts(pl.x+pl.w/2,pl.y,"#c9a86b",8,2);}}}
+for(const z of level.zones){if(!z.seen&&p.x>z.x0+20&&p.x<z.x1){z.seen=true;toast=z.name;toastT=80;bigToast=z.banner;bigToastT=110;}}
 if(p.onGround){p.safeX=p.x;p.safeY=p.y;p.airJumps=1;} // last safe footing + double-jump refresh
 if(p.slideT>0){p.slideT--;if(p.onGround){p.vy=0;p.vx=p.face*MOVE.slide.speed;if(time%3===0)spawnParts(p.x-p.face*12,p.y-2,cloak().color,2,1.4);}else p.slideT=0;}
 if(p.slideCd>0)p.slideCd--;
@@ -350,6 +384,8 @@ for(const r of level.rivals){
  }}
 // player projectiles
 for(const pr of projs){pr.x+=pr.vx;pr.y+=pr.vy;pr.life--;
+ for(const g of level.gates){if(g.open||pr.el!==g.el||pr.life<=0)continue;
+  if(Math.abs(pr.x-(g.x+g.w/2))<40&&pr.y>GROUND-g.vault-10&&pr.y<GROUND+8){g.open=true;pr.life=0;toast=STR.gateOpen;toastT=80;spawnParts(g.x+g.w/2,GROUND-70,ELEMENTS[g.el].color,22,4);}}
  for(const m of level.mobs){if(m.hp<=0)continue;
   if(Math.abs(pr.x-m.x)<36&&Math.abs(pr.y-(m.hitY??m.y-40))<44){
    const weak=MOBW[m.kind]===pr.el;
@@ -453,12 +489,23 @@ if(state==="title"){renderTitle(VW);ctx.restore();renderTouchUI();devOut();retur
 if(state==="forge"){renderForge(VW);ctx.restore();renderTouchUI();devOut();return;}
 if(state==="intro"){renderIntro(VW);ctx.restore();renderTouchUI();devOut();return;}
 ctx.save();ctx.translate(-cam,0);
+for(const z of level.zones){if(z.x1<cam-40||z.x0>cam+VW+40)continue;
+ ctx.fillStyle=z.tint;ctx.globalAlpha=z.kind==="pillars"?0.34:0.16;ctx.fillRect(z.x0,0,z.x1-z.x0,720);ctx.globalAlpha=1;drawCalls++;}
 // platforms: tiles batched pattern-style
 const t=IMG.tile;
-for(const pl of level.plats){if(pl.x+pl.w<cam||pl.x>cam+VW)continue;
+for(const pl of level.plats){if(pl.gone||pl.x+pl.w<cam||pl.x>cam+VW)continue;
+ const shake=pl.kind==="crumble"&&pl.life>=0&&pl.life<16?Math.sin(time*0.9)*2.5:0;
  const tiles=Math.ceil(pl.w/TILE);
- for(let i=0;i<tiles;i++)dimg(t,pl.x+i*TILE,pl.y,TILE,TILE);
- ctx.fillStyle="rgba(201,168,107,0.55)";ctx.fillRect(pl.x,pl.y,pl.w,3);drawCalls++;}
+ for(let i=0;i<tiles;i++)dimg(t,pl.x+i*TILE+shake,pl.y,TILE,TILE);
+ ctx.fillStyle=pl.kind==="crumble"?(pl.life>=0?"rgba(212,99,74,0.75)":"rgba(201,168,107,0.4)"):pl.kind==="pillar"?"rgba(159,123,255,0.75)":pl.kind==="vault"?"rgba(159,123,255,0.9)":"rgba(201,168,107,0.55)";
+ ctx.fillRect(pl.x+shake,pl.y,pl.w,3);drawCalls++;}
+for(const g of level.gates){if(g.x>cam+VW+60||g.x+g.w<cam-60)continue;
+ const col=ELEMENTS[g.el].color;
+ if(!g.open){ctx.fillStyle="#120e1c";ctx.fillRect(g.x,GROUND-g.vault,g.w,g.vault);drawCalls++;
+  ctx.fillStyle=col;ctx.globalAlpha=0.9;ctx.fillRect(g.x+3,GROUND-g.vault,g.w-6,5);drawCalls++;
+  ctx.beginPath();ctx.arc(g.x+g.w/2,GROUND-g.vault*0.46,18,0,7);ctx.fill();ctx.globalAlpha=1;drawCalls++;
+  text(ELEMENTS[g.el].name,g.x+g.w/2,GROUND-g.vault-16,12,col);
+ }else{ctx.globalAlpha=0.4;ctx.fillStyle=col;ctx.fillRect(g.x,GROUND-16,g.w,16);ctx.globalAlpha=1;drawCalls++;}}
 // shards
 for(const s of level.shards){if(s.got||s.x<cam-60||s.x>cam+VW+60)continue;const bob=Math.sin(time*0.08+s.x)*6;dimg(IMG.star_shard,s.x-16,s.y+bob,32,38);}
 // element pickups
@@ -717,9 +764,10 @@ resize();reset();requestAnimationFrame(frame);
 // ---------- test hook (headless smoke; no-op for players) ----------
 globalThis.__TEST={update,render,pressed,guardian:()=>level.guardian,mobs:()=>level.mobs,cloak:()=>cloak(),setCloak:(i)=>{cloakIdx=i;},closeCalls:()=>closeCalls,way:()=>level.way,frags:()=>fragments,setFrags:(n)=>{fragments=n;},plats:()=>level.plats,
  nearestEproj:()=>{let best=null;for(const ep of eprojs){const dx=ep.x-player.x,dy=ep.y-(player.y-34);const d=Math.hypot(dx,dy);if((dx*ep.vx<0||Math.abs(dx)<60)&&(!best||d<best.d))best={d,dy};}return best;},
- voidBelow:()=>{return !level.plats.some(pl=>player.x>pl.x-12&&player.x<pl.x+pl.w+12&&pl.y>=player.y-4&&pl.y<=player.y+320);},
- stepUp:(d=100)=>{const px=player.x+d;return level.plats.some(pl=>px>pl.x-10&&px<pl.x+pl.w+10&&pl.y<player.y-20&&pl.y>player.y-160);},
+ voidBelow:()=>{return !level.plats.some(pl=>!pl.gone&&player.x>pl.x-12&&player.x<pl.x+pl.w+12&&pl.y>=player.y-4&&pl.y<=player.y+320);},
+ stepUp:(d=100)=>{const px=player.x+d;return level.plats.some(pl=>!pl.gone&&px>pl.x-10&&px<pl.x+pl.w+10&&pl.y<player.y-20&&pl.y>player.y-160);},
  state:()=>state,player:()=>player,overMsg:()=>overMsg,
  reset:(s)=>{SEED=s;reset();state="title";player.dead=false;},
  activeRival:()=>level.rivals.find(r=>r.state==="fight")||null,
- aheadGap:(d=90)=>{const px=player.x+d;return !level.plats.some(pl=>px>pl.x-10&&px<pl.x+pl.w+10&&pl.y>=player.y-150&&pl.y<=player.y+80);}};
+ aheadGap:(d=90)=>{const px=player.x+d;return !level.plats.some(pl=>!pl.gone&&px>pl.x-10&&px<pl.x+pl.w+10&&pl.y>=player.y-150&&pl.y<=player.y+80);},
+ zones:()=>level.zones,gates:()=>level.gates};
