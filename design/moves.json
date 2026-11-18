@@ -1,0 +1,5 @@
+[
+  {"id": "slide", "name": "Cloak Slide", "input": "Shift", "frames": 22, "cooldown": 42, "speed": 8.4, "damage": 2, "teach": "ram", "hint": "The ram charges high. Shift drops you under it."},
+  {"id": "strike", "name": "Falling Strike", "input": "Cast in the air", "frames": 14, "cooldown": 22, "speed": 7.5, "damage": 2.4, "teach": "scorpion", "hint": "The scorpion waits above. Cast while you are in the air."},
+  {"id": "cut", "name": "Running Cut", "input": "Tap ward while running", "frames": 16, "cooldown": 34, "speed": 0, "damage": 0, "teach": "archer", "hint": "An arrow is coming flat. Tap ward while you run and send it back."}
+]
