@@ -105,13 +105,14 @@ const lay=(piece)=>{
   gates.push({x:gx,w:piece.width,el:piece.element,vault:piece.vault,open:false});
   plats.push({x:gx-18,y:GROUND-piece.vault,w:piece.width+36,kind:"vault"});
   x=gx+piece.width;plats.push({x,y:GROUND,w:280});x+=280;
- }else if(piece.kind==="pillars"){
-  x+=30;
+ }else if(piece.kind==="pillars"||piece.kind==="steps"){
+  const pk=piece.kind==="steps"?"step":"pillar";
+  if(pk!=="step")x+=30;
   for(let i=0;i<piece.count;i++){
    const mid=i===Math.floor(piece.count/2);
-   const gap=mid?piece.gap+piece.wide:piece.gap;
+   const gap=i===0&&pk==="step"?0:(mid?piece.gap+piece.wide:piece.gap);
    const w=mid&&piece.span>piece.width?piece.span:piece.width;
-   x+=gap;plats.push({x,y:GROUND,w,kind:"pillar"});
+   x+=gap;plats.push({x,y:GROUND,w,kind:pk});
    if(i===3)shards.push({x:x+w/2,y:GROUND-78,got:false});
    x+=w;}
  }
@@ -492,14 +493,14 @@ if(state==="forge"){renderForge(VW);ctx.restore();renderTouchUI();devOut();retur
 if(state==="intro"){renderIntro(VW);ctx.restore();renderTouchUI();devOut();return;}
 ctx.save();ctx.translate(-cam,0);
 for(const z of level.zones){if(z.x1<cam-40||z.x0>cam+VW+40)continue;
- ctx.fillStyle=z.tint;ctx.globalAlpha=z.kind==="pillars"?0.34:0.16;ctx.fillRect(z.x0,0,z.x1-z.x0,720);ctx.globalAlpha=1;drawCalls++;}
+ ctx.fillStyle=z.tint;ctx.globalAlpha=z.kind==="pillars"?0.34:z.kind==="steps"?0.24:0.16;ctx.fillRect(z.x0,0,z.x1-z.x0,720);ctx.globalAlpha=1;drawCalls++;}
 // platforms: tiles batched pattern-style
 const t=IMG.tile;
 for(const pl of level.plats){if(pl.gone||pl.x+pl.w<cam||pl.x>cam+VW)continue;
  const shake=pl.kind==="crumble"&&pl.life>=0&&pl.life<16?Math.sin(time*0.9)*2.5:0;
  const tiles=Math.ceil(pl.w/TILE);
  for(let i=0;i<tiles;i++)dimg(t,pl.x+i*TILE+shake,pl.y,TILE,TILE);
- ctx.fillStyle=pl.kind==="crumble"?(pl.life>=0?"rgba(212,99,74,0.75)":"rgba(201,168,107,0.4)"):pl.kind==="pillar"?"rgba(159,123,255,0.75)":pl.kind==="vault"?"rgba(159,123,255,0.9)":"rgba(201,168,107,0.55)";
+ ctx.fillStyle=pl.kind==="crumble"?(pl.life>=0?"rgba(212,99,74,0.75)":"rgba(201,168,107,0.4)"):pl.kind==="pillar"?"rgba(159,123,255,0.75)":pl.kind==="step"?"rgba(232,220,200,0.9)":pl.kind==="vault"?"rgba(159,123,255,0.9)":"rgba(201,168,107,0.55)";
  ctx.fillRect(pl.x+shake,pl.y,pl.w,3);drawCalls++;}
 for(const g of level.gates){if(g.x>cam+VW+60||g.x+g.w<cam-60)continue;
  const col=ELEMENTS[g.el].color;
