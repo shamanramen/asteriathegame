@@ -4,6 +4,6 @@
   {"id": "serpent", "name": "Serpent of Neptune", "hp": 2, "weak": "lightning", "behavior": "lob", "w": 86, "h": 84, "teach": "none"},
   {"id": "lion", "name": "Nemean Lion", "hp": 2, "weak": "gravity", "behavior": "pounce", "w": 108, "h": 72, "teach": "none"},
   {"id": "ram", "name": "Ram of Aries", "hp": 3, "weak": "gravity", "behavior": "charge-high", "w": 110, "h": 72, "teach": "slide"},
-  {"id": "scorpion", "name": "Scorpion of the Ledge", "hp": 3, "weak": "fire", "behavior": "tail", "w": 80, "h": 80, "teach": "strike"},
-  {"id": "archer", "name": "Archer of the Trail", "hp": 2, "weak": "lightning", "behavior": "flat-shot", "w": 104, "h": 104, "teach": "cut"}
+  {"id": "scorpion", "name": "Scorpion of the Ledge", "hp": 3, "weak": "fire", "behavior": "tail", "w": 80, "h": 80, "teach": "sigil"},
+  {"id": "archer", "name": "Archer of the Trail", "hp": 2, "weak": "lightning", "behavior": "flat-shot", "w": 104, "h": 104, "teach": "swing"}
 ]
