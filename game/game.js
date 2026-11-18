@@ -108,10 +108,12 @@ const lay=(piece)=>{
  }else if(piece.kind==="pillars"){
   x+=30;
   for(let i=0;i<piece.count;i++){
-   const gap=i===Math.floor(piece.count/2)?piece.gap+100:piece.gap;
-   x+=gap;plats.push({x,y:GROUND,w:piece.width,kind:"pillar"});
-   if(i===3)shards.push({x:x+piece.width/2,y:GROUND-78,got:false});
-   x+=piece.width;}
+   const mid=i===Math.floor(piece.count/2);
+   const gap=mid?piece.gap+piece.wide:piece.gap;
+   const w=mid&&piece.span>piece.width?piece.span:piece.width;
+   x+=gap;plats.push({x,y:GROUND,w,kind:"pillar"});
+   if(i===3)shards.push({x:x+w/2,y:GROUND-78,got:false});
+   x+=w;}
  }
  zones.push({x0,x1:x,name:piece.name,tint:piece.tint,banner:piece.banner,seen:false,kind:piece.kind});
 };
