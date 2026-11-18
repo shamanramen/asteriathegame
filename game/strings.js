@@ -4,6 +4,7 @@ export const STR = {
   pressStart: "Press SPACE / tap to begin the hunt",
   intro: "Her island vanished. The world woke in her temples.|Every elementalist hunts Asteria - she grants any wish.|You chase too. You cannot remember why.",
   controls: "A/D: run  Space: jump  J: cast  K: blink  I / hold S: ward  Q: switch  L: fusion",
+  moveBar: "Shift: slide    F: fallen sigil    V: star blade",
   controlsTouch: "Left side: move    Right side: jump / cast / dash",
   heat: "TRAIL",
   hpLabel: "VITALITY",
@@ -86,5 +87,5 @@ export const STR = {
   escape3: "She is gone. A memory fragment glitters where she stood.",
   escapeTitle: "SHE SLIPS AWAY AGAIN",
   closeCalls: "CLOSE CALLS",
-  controlsForge: "controls reminder: I or hold S: ward    K: blink    L: fusion",
+  controlsForge: "Shift: slide    F: fallen sigil    V: star blade",
 };

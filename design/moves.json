@@ -1,0 +1,5 @@
+[
+  {"id": "slide", "name": "Cloak Slide", "feel": "body", "input": "Shift", "frames": 22, "cooldown": 42, "speed": 8.4, "damage": 2, "teach": "ram", "hint": "The ram charges high. Shift drops your body under it."},
+  {"id": "sigil", "name": "Fallen Sigil", "feel": "spell", "input": "F", "frames": 40, "cooldown": 50, "speed": 2.6, "damage": 2.2, "teach": "scorpion", "hint": "The scorpion waits above. Press F and a star blooms into it."},
+  {"id": "swing", "name": "Star Blade", "feel": "weapon", "input": "V", "frames": 16, "cooldown": 28, "speed": 0, "damage": 2.6, "teach": "archer", "hint": "An arrow is coming flat. Press V and cut it back with the blade."}
+]
